@@ -17,6 +17,7 @@ jobs:
           collection=$(curl -s -X GET "${collection_url}" -H "X-Api-Key: ${{ secrets.POSTMAN_API_KEY }}" | jq -r '.collection | @base64')
           echo "$collection" | base64 --decode > collection.json
 
+
           # Fetch environment
           environment_id="24513725-775dc746-81ce-4c95-8449-fac68da17cc1"
           environment_url="https://api.getpostman.com/environments/${environment_id}"
