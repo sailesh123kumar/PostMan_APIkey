@@ -1,4 +1,4 @@
-name: Automated API tests using Postman CLI
+name: Automated API tests using Newman
 
 on: push
 
@@ -7,17 +7,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
       - name: Install Newman
         run: npm install -g newman
-      - name: Install Postman CLI
-        run: |
-          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      - name: Login to Postman CLI
-        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
-        
       - name: Run API tests
-        run:  newman run https://www.getpostman.com/collections/24513725-5c4a8fb5-3953-45f4-93e0-045c63cce930 -e https://www.getpostman.com/environments/24513725-775dc746-81ce-4c95-8449-fac68da17cc1
+        run: |
+          # Fetch collection
+          collection_id="24513725-5c4a8fb5-3953-45f4-93e0-045c63cce930"
+          collection_url="https://api.getpostman.com/collections/${collection_id}"
+          collection=$(curl -s -X GET "${collection_url}" -H "X-Api-Key: ${{ secrets.POSTMAN_API_KEY }}" | jq -r '.collection | @base64')
+          echo "$collection" | base64 --decode > collection.json
+
+          # Fetch environment
+          environment_id="24513725-775dc746-81ce-4c95-8449-fac68da17cc1"
+          environment_url="https://api.getpostman.com/environments/${environment_id}"
+          environment=$(curl -s -X GET "${environment_url}" -H "X-Api-Key: ${{ secrets.POSTMAN_API_KEY }}" | jq -r '.environment | @base64')
+          echo "$environment" | base64 --decode > environment.json
+
+          # Run Newman
+          newman run collection.json --environment environment.json
