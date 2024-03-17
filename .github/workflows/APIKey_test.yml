@@ -25,6 +25,7 @@ jobs:
 
           # Run Newman
           newman run collection.json --environment environment.json --reporters htmlextra
+          
 
       - name: Upload HTML Report as Artifact
         uses: actions/upload-artifact@v2
