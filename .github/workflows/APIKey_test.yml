@@ -6,7 +6,7 @@ jobs:
   automated-api-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       - name: Install Newman
         run: npm install -g newman newman-reporter-htmlextra
       - name: Run API tests
@@ -26,7 +26,7 @@ jobs:
           # Run Newman
           newman run collection.json --environment environment.json --reporters htmlextra
       - name: Upload HTML Report as Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: newman-report
           path: newman/*
