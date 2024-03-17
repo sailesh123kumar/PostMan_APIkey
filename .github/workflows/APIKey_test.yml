@@ -1,5 +1,6 @@
 name: Automated API tests using Newman
 
+
 on: 
     workflow_dispatch:
     push:
