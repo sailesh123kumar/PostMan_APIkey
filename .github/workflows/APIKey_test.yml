@@ -26,6 +26,7 @@ jobs:
           environment_url="https://api.getpostman.com/environments/${environment_id}"
           environment=$(curl -s -X GET "${environment_url}" -H "X-Api-Key: ${{ secrets.POSTMAN_API_KEY }}" | jq -r '.environment | @base64')
           echo "$environment" | base64 --decode > environment.json
+          
 
           # Run Newman
           newman run collection.json --environment environment.json --reporters htmlextra   
