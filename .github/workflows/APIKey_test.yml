@@ -12,7 +12,6 @@ jobs:
       - name: Install Newman
         run: npm install -g newman newman-reporter-htmlextra
         
-            
       - name: Run API tests
         run: |
           # Fetch collection
