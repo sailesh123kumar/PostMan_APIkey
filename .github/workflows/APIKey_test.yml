@@ -24,7 +24,7 @@ jobs:
           echo "$environment" | base64 --decode > environment.json
 
           # Run Newman
-          newman run collection.json --environment environment.json
+          newman run collection.json --environment environment.json --reporters htmlextra
           
 
       - name: Upload HTML Report as Artifact
