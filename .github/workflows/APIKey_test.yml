@@ -7,13 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install Postman CLI
-        run: |
-          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      - name: Login to Postman CLI
-        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - name: Install Newman
+        run: npm install -g newman
       - name: Run API tests
         run: |
-          postman collection run "24513725-5c4a8fb5-3953-45f4-93e0-045c63cce930" -e "24513725-775dc746-81ce-4c95-8449-fac68da17cc1"
-      - name: logout
-        run: postman logout ${{ secrets.POSTMAN_API_KEY }}
+          newman run https://www.getpostman.com/collections/24513725-5c4a8fb5-3953-45f4-93e0-045c63cce930 -e https://www.getpostman.com/environments/24513725-775dc746-81ce-4c95-8449-fac68da17cc1 --global-var "apiKey=${{ secrets.POSTMAN_API_KEY }}"
