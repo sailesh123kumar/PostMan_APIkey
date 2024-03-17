@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install Newman and Newman HTML Extra Reporter
+      - name: Install Newman
         run: npm install -g newman newman-reporter-htmlextra
       - name: Run API tests
         run: |
@@ -23,8 +23,10 @@ jobs:
           environment=$(curl -s -X GET "${environment_url}" -H "X-Api-Key: ${{ secrets.POSTMAN_API_KEY }}" | jq -r '.environment | @base64')
           echo "$environment" | base64 --decode > environment.json
 
-          # Run Newman with HTML Extra Reporter
+          # Run Newman
           newman run collection.json --environment environment.json --reporters htmlextra
+          
+
       - name: Upload HTML Report as Artifact
         uses: actions/upload-artifact@v2
         with:
