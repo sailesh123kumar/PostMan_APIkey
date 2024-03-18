@@ -39,7 +39,10 @@ jobs:
           echo "$environment" | base64 --decode > environment.json
           
           # Run Newman
-          newman run collection.json --environment environment.json --reporters htmlextra
+          # newman run collection.json --environment environment.json --reporters htmlextra
+
+          #Run Iteration 5
+          newman run collection.json --environment environment.json -n 5 --reporters htmlextra
 
       - name: Upload HTML Report as Artifact
         uses: actions/upload-artifact@v3
